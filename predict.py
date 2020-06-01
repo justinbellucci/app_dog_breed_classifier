@@ -66,26 +66,3 @@ def dog_detector(img_path):
         return True
     else:
         return False
-
-
-def run_app(img_path):
-    ## handle cases for a human face, dog, and neither
-    detector_type = cv2.CascadeClassifier('haarcascades/haarcascade_frontalface_alt.xml')
-    class_names = [item[4:].replace("_", " ") for item in train_data.classes]
-    
-    # run image through model
-    is_dog = dog_detector(img_path)
-    class_pred = predict_breed_transfer(img_path)
-    dog_name = class_names[class_pred[0]]
-    
-    if is_dog == True:
-        print('Yea! Dog detected - {}'.format(dog_name))
-        show_img(img_path)
-    else:
-        faces = face_detector_haar(img_path, detector_type)
-        if faces == True:
-            print('Human detected! Similar to {}'.format(dog_name))
-            show_img(img_path)
-        else:
-            print('Error - Neither Dog nor Human Detected.')
-            show_img(img_path)
