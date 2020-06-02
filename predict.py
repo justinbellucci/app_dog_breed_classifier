@@ -3,22 +3,24 @@
 # REVISED DATE: 
 
 import torch
-import utility_functions
-import model_functions
-from get_input_args import get_input_args
+import cv2
+from image_helper import process_image
+from torchvision import models
+from model_functions import load_checkpoint
 
-def predict_breed_transfer(img_path):
-    """
-        Use trained model to obtain index corresponding to 
+### ----------------------------------------------
+def predict_breed(img_path):
+    """ Use trained model to obtain index corresponding to 
         predicted ImageNet class for image at specified path
     
-        Args:
-            img_path: path to an image
+        Arguments:
+            - img_path (str)
         
         Returns:
-            Index corresponding to model's prediction
+            - Index corresponding to model's prediction
     """
-    model_transfer.load_state_dict(torch.load('model_transfer.pt'))
+    # model_transfer.load_state_dict(torch.load('model_transfer.pt'))
+    model_transfer = load_checkpoint()
     # move model to correct device
     device = torch.device("cpu")
     model_transfer.to(device)
@@ -38,31 +40,35 @@ def predict_breed_transfer(img_path):
         
     return  class_pred
 
-# Import python modules
-import cv2
-
 ### ----------------------------------------------
-# returns "True" if face is detected in image stored at img_path
-def face_detector_haar(img_path, detector_type):
-    img = cv2.imread(img_path)
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    faces = detector_type.detectMultiScale(gray)
-    return len(faces) > 0
-
-### ----------------------------------------------
-def dog_detector(img_path):
-    """Returns True if a dog is detected in the supplied image.
+def VGG16_predict(img_path):
+    """ Use pre-trained VGG-16 model to obtain index corresponding to 
+        predicted ImageNet class for image at specified path
     
-       Arguments:
-           - image path (str)
-       Returns:
-           - Boolean
+        Arguments:
+            - img_path (str)
+        
+        Returns:
+            - Index corresponding to VGG-16 model's prediction
     """
-    # run image through model
-    class_pred = VGG16_predict(img_path)
+    # move model to correct device
+    VGG16 = models.vgg16(pretrained=True)
+
+    device = torch.device("cpu")
+    VGG16.to(device)
     
-    # Imagenet class dictionary keys 151-268, inclusive, correspond to dog names
-    if ((class_pred >= 151) and (class_pred <= 268)):
-        return True
-    else:
-        return False
+    with torch.no_grad():
+        # process image
+        image = process_image(img_path)
+        image = image.unsqueeze_(0)
+        image.to(device)
+        
+        output = VGG16(image)
+        
+        # convert output probabilities to predicted class
+        _, class_tensor = torch.max(output, 1)
+
+        # convert output tensor to numpy array
+        class_pred = class_tensor.numpy()
+        
+    return  class_pred

@@ -11,10 +11,10 @@ from classifier import Classifier
 def load_class_dict(class_dict_path):
     """Loads ImageNet class idx to labels text file.
     
-       Input:
+       Arguments:
            - file_path (str)
        
-       Output:
+       Returns:
            - imagenet_class_dict (dict)
     """
     with open(class_dict_path) as f:
