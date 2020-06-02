@@ -3,16 +3,10 @@
 # DATE CREATED: 06_01_2020                                  
 # REVISED DATE: 
 
-# Import python modules
 import torch
-from torch import nn
-import torch.nn.functional as F
-
+import numpy as np
 from PIL import Image
-import torchvision.transforms as transforms
-import ast 
-
-# Set PIL to be tolerant of image files that are truncated.
+import matplotlib.pyplot as plt 
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
