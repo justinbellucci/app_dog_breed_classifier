@@ -41,7 +41,7 @@ def load_checkpoint(filepath='model_transfer.pt'):
     model = models.densenet121(pretrained=True)
     model.classifier = Classifier()
 #     checkpoint = torch.load(filepath, map_location=("cuda" if torch.cuda.is_available() else "cpu"))
-    checkpoint = torch.load(filepath)
+    checkpoint = torch.load(filepath, map_location=torch.device('cpu'))
     model.load_state_dict(checkpoint)
     
     # Freeze the parameters so we dont backpropagate through them
