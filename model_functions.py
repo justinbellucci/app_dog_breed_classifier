@@ -8,19 +8,22 @@ from torchvision import models
 from classifier import Classifier
 
 ### ----------------------------------------------
-def load_class_dict(class_dict_path):
-    """Loads ImageNet class idx to labels text file.
+def load_class_names(path='class_names.txt'):
+    """ Loads the class names created from the torch.datasets.ImageFolder 
+        function. Removes uncessary punctuation and integers.
     
-       Arguments:
-           - file_path (str)
+        Arguments:
+            - file_path (str)
        
-       Returns:
-           - imagenet_class_dict (dict)
+        Returns:
+            - class_names (list)
     """
-    with open(class_dict_path) as f:
-        imagenet_class_dict = ast.literal_eval(f.read())
+    with open('class_names.txt', 'r') as f:
+        class_list = ast.literal_eval(f.read())
+
+    class_names = [item[4:].replace("_", " ") for item in class_list]
         
-    return imagenet_class_dict
+    return class_names
 
 
 ### ----------------------------------------------
