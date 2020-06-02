@@ -2,6 +2,13 @@
 # DATE CREATED: 06_01_2020                                  
 # REVISED DATE: 
 
+import detectors
+import torch
+import cv2
+from torchvision import models
+from predict import predict_breed
+from image_helper import show_img, process_image
+from model_functions import load_class_names
 
 ### ----------------------------------------------
 def main():
@@ -86,19 +93,18 @@ if __name__ == "__main__":
 
 def run_app(img_path):
     ## handle cases for a human face, dog, and neither
-    detector_type = cv2.CascadeClassifier('haarcascades/haarcascade_frontalface_alt.xml')
-    class_names = [item[4:].replace("_", " ") for item in train_data.classes]
     
     # run image through model
-    is_dog = dog_detector(img_path)
-    class_pred = predict_breed_transfer(img_path)
+    is_dog = detectors.dog_detector(img_path)
+    class_pred = predict_breed(img_path)
+    class_names = load_class_names()
     dog_name = class_names[class_pred[0]]
     
     if is_dog == True:
         print('Yea! Dog detected - {}'.format(dog_name))
         show_img(img_path)
     else:
-        faces = face_detector_haar(img_path, detector_type)
+        faces = detectors.face_detector_haar(img_path)
         if faces == True:
             print('Human detected! Similar to {}'.format(dog_name))
             show_img(img_path)
