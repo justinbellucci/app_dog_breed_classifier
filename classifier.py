@@ -24,6 +24,7 @@ class Classifier(nn.Module):
             Self
     """
     def __init__(self):
+        super().__init__()
         # fully connected linear layers
         self.fc1 = nn.Linear(1024, 512)
         self.fc2 = nn.Linear(512, 133)
