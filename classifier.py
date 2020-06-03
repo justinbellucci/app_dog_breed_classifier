@@ -37,5 +37,5 @@ class Classifier(nn.Module):
 
         x = self.dropout(F.relu(self.fc1(x)))
         x = self.fc2(x)
-
+        x = F.log_softmax(x, dim=1) # used for topk funcionality
         return x
