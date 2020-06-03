@@ -14,6 +14,7 @@ from model_functions import load_class_names
 ### ----------------------------------------------
 def get_input_args():
     
+    # TODO: make default_path reference an image path in the repo
     default_path = '/Users/justinbellucci/GitHub/dog_breed_classifier_app/images/Curly-coated_retriever_03896.jpg'
     # default_path = '/Users/justinbellucci/GitHub/dog_breed_classifier_app/images/Rena_Sofer_0001.jpg'
     # Creates Arguement Parser object named parser
