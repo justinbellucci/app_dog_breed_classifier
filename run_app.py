@@ -15,6 +15,7 @@ from model_functions import load_class_names
 def get_input_args():
     
     default_path = '/Users/justinbellucci/GitHub/dog_breed_classifier_app/images/Curly-coated_retriever_03896.jpg'
+    # default_path = '/Users/justinbellucci/GitHub/dog_breed_classifier_app/images/Rena_Sofer_0001.jpg'
     # Creates Arguement Parser object named parser
     parser = argparse.ArgumentParser()
     # Argument 1: image path
@@ -28,17 +29,30 @@ def run_app(img_path):
     
     # run image through model
     is_dog = detectors.dog_detector(img_path)
-    class_pred = predict_breed(img_path)
+    probs, classes = predict_breed(img_path)
     class_names = load_class_names()
-    dog_name = class_names[class_pred[0]]
-    
+    # dog_name = class_names[class_pred[0]]
+    # print(class_pred[0])
+    # print(probs)
+    # print(classes)
+
     if is_dog == True:
-        print('Yea! Dog detected - {}'.format(dog_name))
+        print("It's a dog! -> {:.3f}% probability it's a {}".format(probs[0]*100,
+              class_names[classes[0]]))
+        print("---------------------")
+        print("Top 5 Class Probabilities")
+        print("{}: {:.3f}%".format(class_names[classes[0]], probs[0]*100))
+        print("{}: {:.3f}%".format(class_names[classes[1]], probs[1]*100))
+        print("{}: {:.3f}%".format(class_names[classes[2]], probs[2]*100))
+        print("{}: {:.3f}%".format(class_names[classes[3]], probs[3]*100))
+        print("{}: {:.3f}%".format(class_names[classes[4]], probs[4]*100))
+        print("/n")
         show_img(img_path)
     else:
         faces = detectors.face_detector_haar(img_path)
         if faces == True:
-            print('Human detected! Similar to {}'.format(dog_name))
+            print("Human detected! -> {:.3f}% probability they look similar to a {}".format(probs[0]*100,
+                  class_names[classes[0]]))
             show_img(img_path)
         else:
             print('Error - Neither Dog nor Human Detected.')
