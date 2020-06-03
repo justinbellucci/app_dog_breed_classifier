@@ -19,7 +19,7 @@ def predict_breed(img_path):
         Returns:
             - Index corresponding to model's prediction
     """
-    # model_transfer.load_state_dict(torch.load('model_transfer.pt'))
+    topk = 5 # topk probabilities/classes
     model_transfer = load_checkpoint()
     # move model to correct device
     device = torch.device("cpu")
@@ -31,14 +31,19 @@ def predict_breed(img_path):
         image = image.unsqueeze_(0)
 
         output = model_transfer(image)
-
+        # calculate topk classes for prediction
+        
+        ps = torch.exp(output)
+        top_p, top_c = ps.topk(topk, dim=1, largest=True, sorted=True)
+        probs = top_p.tolist()[0]
+        classes = top_c.tolist()[0]
         # convert output probabilities to predicted class
-        _, class_tensor = torch.max(output, 1)
+        # _, class_tensor = torch.max(output, 1)
 
         # convert output tensor to numpy array
-        class_pred = class_tensor.numpy()
+        # class_pred = class_tensor.numpy()
         
-    return  class_pred
+    return  probs, classes
 
 ### ----------------------------------------------
 def VGG16_predict(img_path):
