@@ -16,7 +16,7 @@ def face_detector_haar(img_path):
         Returns:
             - Boolean value
     """
-    detector_type = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
+    detector_type = cv2.CascadeClassifier('backend/assets/haarcascade_frontalface_alt.xml')
     img = cv2.imread(img_path)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = detector_type.detectMultiScale(gray)
