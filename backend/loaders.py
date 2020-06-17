@@ -49,7 +49,7 @@ def data_loader(img_dir):
     loaders_transfer['valid'] = torch.utils.data.DataLoader(valid_data, batch_size=batch_size, shuffle=True)
     loaders_transfer['test'] = torch.utils.data.DataLoader(test_data, batch_size=batch_size, shuffle=True)
 
-    return loaders_transfer, train_data.classes
+    return loaders_transfer, train_data
 
 # ------------------------------------------------------
 
