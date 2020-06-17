@@ -116,7 +116,7 @@ def main():
     # import model
     model = models.densenet121(pretrained=True)
     # import loaders, classifier, loss, and optimizer fns
-    loaders = data_loader(img_dir)
+    loaders, train_data = data_loader(img_dir)
     model.classifier = Classifier()
     criterion = nn.NLLLoss()
     optimizer = optim.SGD(model.classifier.parameters(), lr=0.001, momentum=0.7)
