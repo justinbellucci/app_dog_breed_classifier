@@ -24,7 +24,7 @@ def get_input_args():
     # directory to save the model checkpoint
     save_dir = 'backend/assets/model_checkpoint.pt'
 
-    img_dir = '/Users/justinbellucci/GitHub/dog_breed_classifier_app/dogImages'
+    img_dir = 'dogImages'
     # Creates Arguement Parser object named parser
     parser = argparse.ArgumentParser()
     # Argument 1: image path
