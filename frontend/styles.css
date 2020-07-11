@@ -94,13 +94,18 @@ p{
 }
 
 /* ATTRIBUTE CLASSES */
-button{
+input[type="file"]{
+    display: none;
+}
+
+.custom-file-upload{
+    display: inline-block;
+    padding: 20px;
+    cursor: pointer;
     background-color: #7DBAE9;
     border-radius: 10px;
     border: 1px solid black;
     font-size: 21px;
-    width: 170px;
-    height: 50px;
 }
 
 button:hover{
