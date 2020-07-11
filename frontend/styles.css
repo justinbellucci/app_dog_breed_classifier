@@ -83,7 +83,7 @@ p{
 }
 
 .content-box{
-    width: 250px;
+    width: 300px;
     height: 150px;
     margin: 15px;
 }
@@ -108,7 +108,7 @@ input[type="file"]{
     font-size: 21px;
 }
 
-button:hover{
+.custom-file-upload:hover{
     background-color: white;
 }
 
