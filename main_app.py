@@ -12,9 +12,8 @@ st.set_option('deprecation.showfileUploaderEncoding', False)
 st.title('Dog Breed Classifier App')
 img = st.file_uploader('Upload Image', type='jpg')
 st.text('{}'.format(type(img)))
-placeholder = st.empty()
 
 if not st.button('Reset'):
     st.image(img, output_format='JPEG', use_column_width=True)
 else:
-    st.image() 
+    st.markdown('## Want to try again?')
