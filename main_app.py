@@ -6,14 +6,31 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
+import time
 
-st.set_option('deprecation.showfileUploaderEncoding', False)
+def main():
 
-st.title('Dog Breed Classifier App')
-img = st.file_uploader('Upload Image', type='jpg')
-st.text('{}'.format(type(img)))
+    st.set_option('deprecation.showfileUploaderEncoding', False)
 
-if not st.button('Reset'):
-    st.image(img, output_format='JPEG', use_column_width=True)
-else:
-    st.markdown('## Want to try again?')
+    reset = False
+    st.title('Dog Breed Classifier App')
+    uploaded_file = st.file_uploader('Upload Image', type='jpg')
+    # st.text('{}'.format(type(uploaded_file)))
+    
+    if uploaded_file is not None:
+        side_title = add_sidebar()
+        st.text(type(side_title))
+        st.sidebar.image(uploaded_file, output_format='JPEG', use_column_width=True)
+    
+    if st.button('Reset'):
+        reset_page()
+
+def add_sidebar():
+    side_title = st.sidebar.title('Doggy')
+    return side_title
+
+def reset_page():
+    placeholder = st.empty()
+    return 
+if __name__ == "__main__":
+    main()
