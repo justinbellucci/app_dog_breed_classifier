@@ -8,39 +8,30 @@ import backend.detectors
 
 app = Flask(__name__)
 
-@app.route("/")
-def index():
-    # return "<h1>Index Page</h1>"
-    return render_template('index.html',  title='Index')
-
-@app.route('/bootstrap')
-def bootstrap():
-    return render_template('bootstrap.html', title='Bootstrap')
-
-# @app.route('/', methods=['GET', 'POST'])
-# def upload_file():
-#     if request.method == 'POST':
-#         if 'file' not in request.files:
-#             return redirect(request.url) # redirect to same page
-#         file = request.files['file'] # get file from request
-#         if not file:
-#             return # add error message
+@app.route('/', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return redirect(request.url) # redirect to same page
+        file = request.files['file'] # get file from request
+        if not file:
+            return # add error message
     
-#         # display image on webpage
+        # display image on webpage
 
 
-#         # process image
-#         img_bytes = file.read()
-#         # run image throuh model
-#         is_dog = detectors.dog_detector(img_bytes) 
-#         probs, classes = predict_breed(img_bytes)
-#         class_names = load_class_names()
+        # process image
+        img_bytes = file.read()
+        # run image throuh model
+        # is_dog = detectors.dog_detector(img_bytes) 
+        # probs, classes = predict_breed(img_bytes)
+        # class_names = load_class_names()
 
-#         # This most likely will need Flask AJAX
-#         return render_template('index.html', class_prob = probs,
-#                                 class_name = class_names)
-
-#     return render_template('index.html', title='Home')
+        # This most likely will need Flask AJAX
+        # return render_template('index.html', class_prob = probs,
+        #                         class_name = class_names)
+        return render_template('home.html', title='Home')
+    return render_template('index.html', title='Index')
 
 if __name__ == "__main__":
     app.run(debug=True)
