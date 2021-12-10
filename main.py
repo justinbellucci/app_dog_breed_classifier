@@ -11,7 +11,11 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     # return "<h1>Index Page</h1>"
-    return render_template('index.html',  title='Home')
+    return render_template('index.html',  title='Index')
+
+@app.route('/bootstrap')
+def bootstrap():
+    return render_template('bootstrap.html', title='Bootstrap')
 
 # @app.route('/', methods=['GET', 'POST'])
 # def upload_file():
