@@ -3,7 +3,7 @@
 # REVISED DATE: 
 
 import cv2 
-from predict import VGG16_predict
+from backend.predict import VGG16_predict
 
 ### ----------------------------------------------
 # returns "True" if face is detected in image stored at img_path
