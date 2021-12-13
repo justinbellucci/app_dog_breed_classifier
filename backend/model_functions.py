@@ -8,7 +8,7 @@ from torchvision import models
 from backend.classifier import Classifier
 
 ### ----------------------------------------------
-def load_class_names(path='assets/class_names.txt'):
+def load_class_names(path='backend/assets/class_names.txt'):
     """ Loads the class names created from the torch.datasets.ImageFolder 
         function. Removes uncessary punctuation and integers.
     
@@ -18,7 +18,7 @@ def load_class_names(path='assets/class_names.txt'):
         Returns:
             - class_names (list)
     """
-    with open('assets/class_names.txt', 'r') as f:
+    with open('backend/assets/class_names.txt', 'r') as f:
         class_list = ast.literal_eval(f.read())
 
     class_names = [item[4:].replace("_", " ") for item in class_list]
@@ -27,7 +27,7 @@ def load_class_names(path='assets/class_names.txt'):
 
 
 ### ----------------------------------------------
-def load_checkpoint(filepath='assets/model_transfer.pt'):
+def load_checkpoint(filepath='backend/assets/model_transfer.pt'):
     """Load a model checkpoint and rebuild model architecture
     
        Arguments:
