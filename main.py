@@ -1,10 +1,11 @@
 import os
+import io
 from flask import Flask, render_template, request, redirect
 
-import backend.detectors  
-# from backend.predict import predict_breed
+import backend.detectors as detectors
+from backend.predict import predict_breed
 # from backend.image_helper import show_img, process_image
-# from backend.model_functions import load_class_names
+from backend.model_functions import load_class_names
 
 app = Flask(__name__)
 
@@ -23,14 +24,18 @@ def upload_file():
         # process image
         img_bytes = file.read()
         # run image throuh model
-        # is_dog = detectors.dog_detector(img_bytes) 
-        # probs, classes = predict_breed(img_bytes)
-        # class_names = load_class_names()
+        is_dog = detectors.dog_detector(io.BytesIO(img_bytes))
+        probs, classes = predict_breed(io.BytesIO(img_bytes))
+        class_names = load_class_names()
 
-        # This most likely will need Flask AJAX
-        # return render_template('index.html', class_prob = probs,
-        #                         class_name = class_names)
-        return render_template('home.html', title='Home')
+        if is_dog:
+            class_name = class_names[classes[0]]
+            prob = probs[0] * 100
+        else:
+            class_name = class_names[classes[0]]
+            prob = probs[0] * 100
+        
+        return render_template('results.html', title='Results', is_dog=is_dog, class_name=class_name, prob=prob)
     return render_template('index.html', title='Index')
 
 if __name__ == "__main__":

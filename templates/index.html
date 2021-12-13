@@ -75,20 +75,23 @@
                 <!-- <label for="Image" class="form-label text-center">Upload an image to run the neural network.</label> -->
                 <input class="form-control" type="file" name="file" id="inputFile" onchange="preview()">
                 <!-- <button onclick="clearImage()" class="btn btn-primary mt-2">Reset</button>   -->
-                <button type="submit" class="btn btn-primary mt-2">Submit</button> 
+                <button type="submit" class="btn btn-primary mt-2" onclick="loading()">Submit</button> 
             </div>  
         </div>
     </form>
 
     <div class="container">
         <div class="row">
-            <div class="col">
+            <div class="col-md-6">
                 <img id="frame" src="" class="img-fluid"/>
             </div>
-            <div class="col">
-                <div id="my_dataviz"></div>    
+            <div class="col-md-6" style="height: 200px;">
+                <div class="text-center">
+                    <!-- <div class="spinner-border mx-auto" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div> -->
+                </div>    
             </div>
-
         </div>
     </div>
     </main>
