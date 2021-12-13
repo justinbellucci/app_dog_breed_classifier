@@ -18,9 +18,6 @@ def upload_file():
         if not file:
             return # add error message
     
-        # display image on webpage
-
-
         # process image
         img_bytes = file.read()
         # run image throuh model
@@ -28,14 +25,15 @@ def upload_file():
         probs, classes = predict_breed(io.BytesIO(img_bytes))
         class_names = load_class_names()
 
-        if is_dog:
-            class_name = class_names[classes[0]]
-            prob = probs[0] * 100
-        else:
-            class_name = class_names[classes[0]]
-            prob = probs[0] * 100
-        
-        return render_template('results.html', title='Results', is_dog=is_dog, class_name=class_name, prob=prob)
+        # add model output to JSON files
+        dog_detected = {"is_dog": is_dog}
+        dog_breeds = [{"breed": class_names[classes[0]], "prob": probs[0]},
+                      {"breed": class_names[classes[1]], "prob": probs[1]},
+                      {"breed": class_names[classes[2]], "prob": probs[2]},
+                      {"breed": class_names[classes[3]], "prob": probs[3]},
+                      {"breed": class_names[classes[4]], "prob": probs[4]}]
+
+        return render_template('results.html', title='Results', dog_detected=dog_detected, dog_breeds=dog_breeds)
     return render_template('index.html', title='Index')
 
 if __name__ == "__main__":

@@ -11,9 +11,18 @@
     <title>Results!</title>
   </head>
   <body>
-    <h1>Is This a Dog? : {{ is_dog }}</h1>
+      {% if dog_detected.is_dog %}
+        <h1>Dog detected!</h1>
+        {% for breed in dog_breeds %}
+            <p>Dog Breed: {{ breed.breed }} --- {{ breed.prob }}</p>
+        {% endfor %}
+      {% else %}
+        <h1>No dog detected!</h1>
+            <p>Looks like a {{ dog_breeds[0].breed }}</p>
+      {% endif %}
+    <!-- <h1>Is This a Dog? : {{ is_dog }}</h1>
     <h1>Class Name : {{ class_name }}</h1>
-    <h1>Probability : {{ prob }}</h1>
+    <h1>Probability : {{ prob }}</h1> -->
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
