@@ -69,16 +69,16 @@
         <p class="lead text-center">If the image is a dog, the app will predict the breed of the dog with a certain probability and output the topk (k=5) results. The application handles cases for a dog, person, and not a dog. Using a haarcascade alogrithm the app will detect if there is a person in the image, then return the dog breed that the person looks most likely resembles.</p>
     </div>
 
-    <form class="form-signin" method="post" enctype="multipart/form-data">
+    <!-- <form class="form-signin" id="calc" method="post" enctype="multipart/form-data"> -->
         <div class="container-sm col-md-3">
             <div class="row align-items-center">
                 <!-- <label for="Image" class="form-label text-center">Upload an image to run the neural network.</label> -->
                 <input class="form-control" type="file" name="file" id="inputFile" onchange="preview()">
                 <!-- <button onclick="clearImage()" class="btn btn-primary mt-2">Reset</button>   -->
-                <button type="submit" class="btn btn-primary mt-2" onclick="loading()">Submit</button> 
+                <button type="submit" id="upload" class="btn btn-primary mt-2">Submit</button> 
             </div>  
         </div>
-    </form>
+    <!-- </form> -->
 
     <div class="container">
         <div class="row">
@@ -87,9 +87,7 @@
             </div>
             <div class="col-md-6" style="height: 200px;">
                 <div class="text-center">
-                    <!-- <div class="spinner-border mx-auto" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div> -->
+                    <p class="lead text-center" id="msg"></p>
                 </div>    
             </div>
         </div>
@@ -112,11 +110,8 @@
         function preview() {
             frame.src = URL.createObjectURL(event.target.files[0]);
         }
-        function clearImage() {
-            document.getElementById('formFile').value = null;
-            frame.src = "";
-        }
     </script>
+
     <script type="text/javascript">
         $('#inputfile').bind('change', function() {
             let fileSize = this.files[0].size/1024/1024;
@@ -133,6 +128,67 @@
             }
         });
       </script>
+
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $('#upload').on('click', function () {
+                var form_data = document.getElementById('multiFiles');
+                
+                $.ajax({
+                    url: 'upload', // point to server-side URL
+                    dataType: 'json', // what to expect back from server
+                    cache: true,
+                    data: form_data,
+                    type: 'post',
+                    success: function (response) { // display success response
+                        $('#msg').html('');
+                        $.each(response, function (key, data) {							
+                            if(key !== 'message') {
+                                $('#msg').append(key + ' -> ' + data + '<br/>');
+                            } else {
+                                $('#msg').append(data + '<br/>');
+                            }
+                        })
+                    },
+                    error: function (response) {
+                        $('#msg').html(response.message); // display error response
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $('#upload').on('click', function () {
+                var form_data = new FormData();
+                form_data.append('file', document.getElementById('inputFile').files[0])
+                
+                $.ajax({
+                    url: 'upload', // point to server-side URL
+                    dataType: 'json', // what to expect back from server
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: form_data,
+                    type: 'POST',
+                    success: function (response) { // display success response
+                        $('#msg').html('');
+                        $.each(response, function (key, data) {							
+                            if(key !== 'message') {
+                                $('#msg').append(key + ' -> ' + data + '<br/>');
+                            } else {
+                                $('#msg').append(data + '<br/>');
+                            }
+                        })
+                    },
+                    error: function (response) {
+                        $('#msg').html(response.message); // display error response
+                    }
+                });
+            });
+        });
+    </script>
 
   </body>
 </html>
