@@ -85,7 +85,7 @@
             <div class="col-md-6">
                 <img id="frame" src="" class="img-fluid"/>
             </div>
-            <div class="col-md-6" style="height: 200px;">
+            <div id="mdb-preloader" class="col-md-6" style="height: 200px;">
                 <div class="text-center">
                     <p class="lead text-center" id="msg"></p>
                 </div>    
@@ -132,35 +132,6 @@
     <script type="text/javascript">
         $(document).ready(function (e) {
             $('#upload').on('click', function () {
-                var form_data = document.getElementById('multiFiles');
-                
-                $.ajax({
-                    url: 'upload', // point to server-side URL
-                    dataType: 'json', // what to expect back from server
-                    cache: true,
-                    data: form_data,
-                    type: 'post',
-                    success: function (response) { // display success response
-                        $('#msg').html('');
-                        $.each(response, function (key, data) {							
-                            if(key !== 'message') {
-                                $('#msg').append(key + ' -> ' + data + '<br/>');
-                            } else {
-                                $('#msg').append(data + '<br/>');
-                            }
-                        })
-                    },
-                    error: function (response) {
-                        $('#msg').html(response.message); // display error response
-                    }
-                });
-            });
-        });
-    </script>
-
-    <script type="text/javascript">
-        $(document).ready(function (e) {
-            $('#upload').on('click', function () {
                 var form_data = new FormData();
                 form_data.append('file', document.getElementById('inputFile').files[0])
                 
@@ -171,16 +142,18 @@
                     contentType: false,
                     processData: false,
                     data: form_data,
-                    type: 'POST',
+                    type: 'post',
                     success: function (response) { // display success response
                         $('#msg').html('');
-                        $.each(response, function (key, data) {							
-                            if(key !== 'message') {
-                                $('#msg').append(key + ' -> ' + data + '<br/>');
-                            } else {
-                                $('#msg').append(data + '<br/>');
-                            }
-                        })
+                        $('#msg').append(response.dog_detected.is_dog + '<br/>');
+                        $('#msg').append(response.dog_breeds[0].breed + '<br/>');
+                        // $.each(response, function (key, data) {							
+                        //     if(key !== 'message') {
+                        //         $('#msg').append(key + ' --> ' + data + '<br/>');
+                        //     } else {
+                        //         $('#msg').append(key + '<br/>');
+                        //     }
+                        // })
                     },
                     error: function (response) {
                         $('#msg').html(response.message); // display error response
