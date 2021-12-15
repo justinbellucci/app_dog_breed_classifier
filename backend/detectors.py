@@ -3,6 +3,8 @@
 # REVISED DATE: 
 
 import cv2 
+import numpy as np
+from PIL import Image
 from backend.predict import VGG16_predict
 
 ### ----------------------------------------------
@@ -16,9 +18,13 @@ def face_detector_haar(img_path):
         Returns:
             - Boolean value
     """
-    detector_type = cv2.CascadeClassifier('assets/haarcascade_frontalface_alt.xml')
-    img = cv2.imread(img_path)
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    detector_type = cv2.CascadeClassifier('backend/assets/haarcascade_frontalface_alt.xml')
+    # img = cv2.imread(img_path)
+    # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # Using PIL to open the image byte stream
+    img_pil = Image.open(img_path)
+    gray = cv2.cvtColor(np.array(img_pil), cv2.COLOR_BGR2GRAY)
     faces = detector_type.detectMultiScale(gray)
     return len(faces) > 0
 
