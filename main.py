@@ -1,10 +1,8 @@
-import os
 import io
 from flask import Flask, render_template, request, redirect, jsonify, url_for
 
 import backend.detectors as detectors
 from backend.predict import predict_breed
-# from backend.image_helper import show_img, process_image
 from backend.model_functions import load_class_names
 
 app = Flask(__name__)
@@ -30,17 +28,39 @@ def upload_file():
     class_names = load_class_names()
 
     # add model output to JSON files
-    dog_detected = {"is_dog": is_dog}
-    dog_breeds = [{"breed": class_names[classes[0]], "prob": probs[0]},
-                  {"breed": class_names[classes[1]], "prob": probs[1]},
-                  {"breed": class_names[classes[2]], "prob": probs[2]},
-                  {"breed": class_names[classes[3]], "prob": probs[3]},
-                  {"breed": class_names[classes[4]], "prob": probs[4]}]
+    if is_dog == True:
+        is_detected = [{"is_dog": True},
+                       {"is_human": False}]
+        dog_breeds = [{"breed": class_names[classes[0]], "prob": probs[0]},
+                      {"breed": class_names[classes[1]], "prob": probs[1]},
+                      {"breed": class_names[classes[2]], "prob": probs[2]},
+                      {"breed": class_names[classes[3]], "prob": probs[3]},
+                      {"breed": class_names[classes[4]], "prob": probs[4]}]
 
-    resp = jsonify({"dog_detected": dog_detected,
+    else:
+        # no dog detected so check for human faces
+        faces = detectors.face_detector_haar(io.BytesIO(img_bytes))
+        if faces == True:
+            is_detected = [{"is_dog": False},
+                           {"is_human": True}]
+            dog_breeds = [{"breed": class_names[classes[0]], "prob": probs[0]},
+                          {"breed": class_names[classes[1]], "prob": probs[1]},
+                          {"breed": class_names[classes[2]], "prob": probs[2]},
+                          {"breed": class_names[classes[3]], "prob": probs[3]},
+                          {"breed": class_names[classes[4]], "prob": probs[4]}]
+
+        else:
+            is_detected = [{"is_dog": False},
+                           {"is_human": False}]
+            dog_breeds = [{"breed": class_names[classes[0]], "prob": probs[0]},
+                          {"breed": class_names[classes[1]], "prob": probs[1]},
+                          {"breed": class_names[classes[2]], "prob": probs[2]},
+                          {"breed": class_names[classes[3]], "prob": probs[3]},
+                          {"breed": class_names[classes[4]], "prob": probs[4]}]
+
+    resp = jsonify({"is_detected": is_detected,
                     "dog_breeds": dog_breeds})
-
     return resp
-    
+
 if __name__ == "__main__":
     app.run(debug=True)

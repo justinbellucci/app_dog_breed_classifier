@@ -82,13 +82,17 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
-                <img id="frame" src="" class="img-fluid"/>
+            <div class="col">
+                <img id="frame" class="img-fluid"/>
             </div>
-            <div id="mdb-preloader" class="col-md-6" style="height: 200px;">
-                <div class="text-center">
-                    <p class="lead text-center" id="msg"></p>
+            <!-- <div id="preloader" class="col align-self-start" style="height: 200px;">
+                <div class="text-">
+                    <p class="h3" id="is_dog_msg"></p>
                 </div>    
+            </div> -->
+            <div class="col">
+                <p class="h3 text-center" id="is_dog_msg"></p>
+                <p class="h5" id="msg"></p>
             </div>
         </div>
     </div>
@@ -144,19 +148,29 @@
                     data: form_data,
                     type: 'post',
                     success: function (response) { // display success response
+                        $('#is_dog_msg').html('');
                         $('#msg').html('');
-                        $('#msg').append(response.dog_detected.is_dog + '<br/>');
-                        $('#msg').append(response.dog_breeds[0].breed + '<br/>');
-                        // $.each(response, function (key, data) {							
-                        //     if(key !== 'message') {
-                        //         $('#msg').append(key + ' --> ' + data + '<br/>');
-                        //     } else {
-                        //         $('#msg').append(key + '<br/>');
-                        //     }
-                        // })
+                        // dog detected
+                        if (response.is_detected[0].is_dog) {
+                            $('#is_dog_msg').html('<p class="h3 text-center">Dog Detected!</p>');
+                            for (let i = 0; i < response.dog_breeds.length; i++) {
+                                var dog = response.dog_breeds[i].breed;
+                                var dog_prob = (response.dog_breeds[i].prob * 100).toFixed(2);
+                                $('#msg').append(dog + ':  ' + dog_prob + '%' + '<br/>');
+                            }
+                            // no dog detected
+                        } else {
+                            // human detected
+                            if (response.is_detected[1].is_human == true) {
+                                $('#is_dog_msg').html('<p class="h3 text-center">Human Detected!</p>');
+                            // no human detected
+                            } else if (response.is_detected[1].is_human == false){
+                                $('#is_dog_msg').html('<p class="h3 text-center">Not a Dog or Human!</p>');
+                            }  
+                        }
                     },
                     error: function (response) {
-                        $('#msg').html(response.message); // display error response
+                        $('#is_dog_msg').html(response.message); // display error response
                     }
                 });
             });
