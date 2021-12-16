@@ -93,7 +93,7 @@
     <!-- Footer -->
     <footer class="footer mt-auto py-3 bg-light">
         <div class="container">
-            <p class="text-muted text-center">Made with Pytorch, Flask, Bootstrap, d3.js, and Love.</p>
+            <p class="text-muted text-center">Made with PyTorch, OpenCV, Flask, Bootstrap, D3, and Love.</p>
         </div>
     </footer>
 
@@ -142,7 +142,6 @@
                     success: function (response) { // display success response
                         $('#is_dog_msg').html('');
                         $('#msg').html('');
-                        $('#my_viz').html('');
                         // dog detected
                         if (response.is_detected[0].is_dog) {
                             $('#is_dog_msg').html('<p class="h3 text-center">Dog Detected!</p>');
