@@ -63,41 +63,31 @@
     </header> -->
 
     <!-- Main Page Content -->
-    <main class="flex-shrink-0">
-    <div class="container">
-        <h1 class="display-2 text-center">Dog Breed Classifier</h1>
-        <p class="lead text-center">If the image is a dog, the app will predict the breed of the dog with a certain probability and output the topk (k=5) results. The application handles cases for a dog, person, and not a dog. Using a haarcascade alogrithm the app will detect if there is a person in the image, then return the dog breed that the person looks most likely resembles.</p>
+    <main>
+    <section class="container text-center">
+        <h1 class="display-2">Dog Breed Classifier</h1>
+        <p class="lead text-muted">If the image is a dog, the app will predict the breed of the dog with a certain probability and output the topk (k=5) results. The application handles cases for a dog, person, and not a dog. Using a haarcascade alogrithm the app will detect if there is a person in the image, then return the dog breed that the person looks most likely resembles.</p>
+    </section>
+
+    <div class="container-sm col-md-3">
+        <div class="row align-items-center">
+            <input class="form-control" type="file" name="file" id="inputFile" onchange="preview()">
+            <button type="submit" id="upload" class="btn btn-primary mt-2">Submit</button> 
+        </div>  
     </div>
 
-    <!-- <form class="form-signin" id="calc" method="post" enctype="multipart/form-data"> -->
-        <div class="container-sm col-md-3">
-            <div class="row align-items-center">
-                <!-- <label for="Image" class="form-label text-center">Upload an image to run the neural network.</label> -->
-                <input class="form-control" type="file" name="file" id="inputFile" onchange="preview()">
-                <!-- <button onclick="clearImage()" class="btn btn-primary mt-2">Reset</button>   -->
-                <button type="submit" id="upload" class="btn btn-primary mt-2">Submit</button> 
-            </div>  
-        </div>
-    <!-- </form> -->
-
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <img id="frame" class="img-fluid"/>
-            </div>
-            <div class="col">
-                <p id="is_dog_msg"></p>
-                <div id="my_dataviz"></div>
-                
-                <!-- <div class="row justify-content-center">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-lg-2">
+                <div class="col">
+                    <img id="frame" class="img-fluid"/>
+                </div>
+                <div class="col-lg-5">
                     <p id="is_dog_msg"></p>
                     <div id="my_dataviz"></div>
-                </div> -->
-                <!-- <p class="h5" id="msg"></p>
-                <div id="my_dataviz"></div> -->
+                </div>
             </div>
         </div>
-    </div>
+    
     </main>
 
     <!-- Footer -->
@@ -183,9 +173,10 @@
 
     <script>
         function loadGraph (response) {
-            var margin = {top: 10, right: 80, bottom: 80, left: 10};
-            width = 600 - margin.left - margin.right;
-            height = 500 - margin.top - margin.bottom;
+        
+            const margin = {top: 10, right: 10, bottom: 40, left: 130};
+            const width = 650 - margin.left - margin.right;
+            const height = 400 - margin.top - margin.bottom;
             
             // append the svg object to the body of the page
             var svg = d3.select('#my_dataviz')
@@ -194,7 +185,7 @@
                     .attr('height', height + margin.top + margin.bottom)
                     .append('g')
                     .attr("transform",
-                          "translate(${margin.left}, ${margin.top})");
+                          "translate(" + margin.left + "," + margin.top + ")");
 
             var data = response.dog_breeds;
 
@@ -212,13 +203,14 @@
 
             // add X and Y axis to the SVG object
             const xAxis = svg.append('g')
-                            .attr('class', 'x axis')
-                            .attr('transform', 'translate(0, ${height})')
+                            // .attr('class', 'x axis')
+                            .attr('transform', 'translate(0,' + height + ')')
+                            .attr('font-weight', 'bold')
                             .call(d3.axisBottom(x));
             
             const yAxis = svg.append('g')
-                            .attr('class', 'y axis')
-                            .call(d3.axisRight(y));
+                            // .attr('class', 'y axis')
+                            .call(d3.axisLeft(y));
 
             // create bars
             const bars = svg.selectAll('.bar')
@@ -229,17 +221,17 @@
                             .attr('width', x(0))
                             .attr('y', d => y(d.breed))
                             .attr('height', y.bandwidth())
-                            .style('fill', '#0d6efd')
-                            .style('opacity', 0.8);
+                            .style('fill', '#FCAC0D')
+                            .style('opacity', 0.9);
 
             // mouseover event listener
             bars.on('mouseover', function() {
-                d3.select(this).style('fill', '#dc3545');
+                d3.select(this).style('fill', '#000000').style('opacity', 0.5);
             });
 
             // mouseout event listener
             bars.on('mouseout', function() {
-                d3.select(this).style('fill', '#0d6efd');
+                d3.select(this).style('fill', '#FCAC0D').style('opacity', 0.9);
             });
 
             // animate bars
@@ -257,8 +249,8 @@
                             .attr('dy', (y.bandwidth() / 2) + 5)
                             .text(d => (d.prob * 100).toFixed(2) + '%')
                             .style('text-anchor', 'middle')
-                            .style('fill', '#000000');
-
+                            .style('fill', '#000000')
+                            .style('font-weight', 'bold');
         }
     </script>
 
