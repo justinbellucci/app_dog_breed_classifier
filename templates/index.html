@@ -143,21 +143,17 @@
                         $('#msg').html('');
                         // dog detected
                         if (response.is_detected[0].is_dog) {
-                            $('#is_dog_msg').html('<p class="h3 text-center">Dog Detected!</p>');
-                            // for (let i = 0; i < response.dog_breeds.length; i++) {
-                            //     var dog = response.dog_breeds[i].breed;
-                            //     var dog_prob = (response.dog_breeds[i].prob * 100).toFixed(2);
-                            //     $('#msg').append(dog + ':  ' + dog_prob + '%' + '<br/>');
-                            // }
+                            $('#is_dog_msg').html('<p class="h3">Dog Detected!</p>');
                             loadGraph(response);
                             // no dog detected
                         } else {
                             // human detected
                             if (response.is_detected[1].is_human == true) {
-                                $('#is_dog_msg').html('<p class="h3 text-center">Human Detected!</p>');
+                                $('#is_dog_msg').html('<p class="h3">Human Detected!</p>');
+                                loadGraph(response);
                             // no human detected
                             } else if (response.is_detected[1].is_human == false){
-                                $('#is_dog_msg').html('<p class="h3 text-center">Not a Dog or Human!</p>');
+                                $('#is_dog_msg').html('<p class="h3">Not a Dog or Human!</p>');
                             }  
                         }
                     },
@@ -172,7 +168,7 @@
     <script>
         function loadGraph (response) {
         
-            const margin = {top: 10, right: 10, bottom: 40, left: 140};
+            const margin = {top: 10, right: 15, bottom: 70, left: 40};
             const width = 700 - margin.left - margin.right;
             const height = 400 - margin.top - margin.bottom;
             
@@ -188,40 +184,40 @@
             var data = response.dog_breeds;
 
             // creat X and Y scales. Scaleband for bars.
-            const x = d3.scaleLinear()
+            const y = d3.scaleLinear()
                         .domain([0, 100])
-                        .rangeRound([0, width])
-                        .nice();
+                        .rangeRound([height, 0]);
             
-            const y = d3.scaleBand()
+            const x = d3.scaleBand()
                         .domain(data.map(d => d.breed))
-                        .range([0, height])
+                        .range([0, width])
                         .padding(0.1);
 
             // add X and Y axis to the SVG object
             const xAxis = svg.append('g')
-                            .attr('class', 'x axis')
+                            .attr('class', 'x axis path text')
                             .attr('transform', 'translate(0,' + height + ')')
-                            .call(d3.axisBottom(x));
+                            .call(d3.axisBottom(x))
+                            .selectAll("text")
+                            .call(wrap, x.bandwidth());
             
             const yAxis = svg.append('g')
-                            .attr('class', 'y axis')
-                            .call(d3.axisLeft(y))
-                            .selectAll('text')
-                            .attr('transform', 'translate(-3,-8)rotate(-30)');
+                            .attr('class', 'y axis text')
+                            .call(d3.axisLeft(y));
+                            
 
             // create bars
             const bars = svg.selectAll('.bar')
                             .data(data)
                             .enter().append('rect')
                             .attr('class', 'bar')
-                            .attr('x', function(d) { return x(0.3); })
-                            .attr('width', x(0))
-                            .attr('y', d => y(d.breed))
-                            .attr('height', y.bandwidth())
+                            .attr('y', d => y(0))
+                            .attr('height', y(0) - height)
+                            .attr('x', d => x(d.breed))
+                            .attr('width', x.bandwidth())
                             .style('fill', '#FCAC0D')
                             .style('opacity', 0.9);
-
+            
             // mouseover event listener
             bars.on('mouseover', function() {
                 d3.select(this).style('fill', '#000000').style('opacity', 0.5);
@@ -234,17 +230,18 @@
 
             // animate bars
             bars.transition().duration(800)
-                .attr('width', d => x((d.prob * 100).toFixed(2)))
+                .attr('height', d => height - y((d.prob * 100).toFixed(2)))
+                .attr('y', d => y((d.prob * 100).toFixed(2)))
                 .ease(d3.easeCubic);
 
             // Apend text to the bars
             const text = svg.selectAll('.prob')
                             .data(data)
                             .enter().append('text')
-                            .attr('x', d => x((d.prob * 100).toFixed(2)))
-                            .attr('y', d => y(d.breed))
-                            .attr('dx', 35)
-                            .attr('dy', (y.bandwidth() / 2) + 5)
+                            .attr('y', d => y((d.prob * 100).toFixed(2)))
+                            .attr('x', d => x(d.breed))
+                            .attr('dy', -6)
+                            .attr('dx', (x.bandwidth() / 2) + 5)
                             .text(d => (d.prob * 100).toFixed(2) + '%')
                             .style('text-anchor', 'middle')
                             .style('fill', '#000000')

@@ -20,10 +20,9 @@ main > .container-sm {
 
 .axis text {
   font-family: Helvetica;
-  /* fill: #000000; */
-  font-size: 12px;
+  font-size: 15px;
 }
 
-/* .x.axis path {
+.x.axis path {
   display: none;
-} */
+}
