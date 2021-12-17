@@ -4,9 +4,9 @@
 
 import torch
 import cv2
-from image_helper import process_image
+from backend.image_helper import process_image
 from torchvision import models
-from model_functions import load_checkpoint
+from backend.model_functions import load_checkpoint
 
 ### ----------------------------------------------
 def predict_breed(img_path):

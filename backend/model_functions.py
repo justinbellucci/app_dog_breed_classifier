@@ -5,7 +5,7 @@
 import ast
 import torch
 from torchvision import models
-from classifier import Classifier
+from backend.classifier import Classifier
 
 ### ----------------------------------------------
 def load_class_names(path='backend/assets/class_names.txt'):

@@ -14,7 +14,7 @@ from model_functions import load_class_names
 ### ----------------------------------------------
 def get_input_args():
     
-    default_path = 'backend/test_imgs/Labrador_retriever_01.jpg'
+    default_path = 'test_imgs/Labrador_retriever_01.jpg'
 
     # Creates Arguement Parser object named parser
     parser = argparse.ArgumentParser()
