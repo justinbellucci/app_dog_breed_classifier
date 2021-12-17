@@ -8,7 +8,7 @@
         <!-- Bootstrap core CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <!-- Load d3.js -->
-        <script src="https://d3js.org/d3.v4.js"></script>
+        <script src="https://d3js.org/d3.v7.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     
         <style>
@@ -99,7 +99,6 @@
 
     <!-- Load Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <!-- <script src="/static/app.js" type="text/javascript"></script> -->
 
     <!--- Custom JS -->
     <script>
@@ -123,7 +122,7 @@
               alert('JPEG and JPG files only!');
             }
         });
-      </script>
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function (e) {
@@ -173,8 +172,8 @@
     <script>
         function loadGraph (response) {
         
-            const margin = {top: 10, right: 10, bottom: 40, left: 130};
-            const width = 650 - margin.left - margin.right;
+            const margin = {top: 10, right: 10, bottom: 40, left: 140};
+            const width = 700 - margin.left - margin.right;
             const height = 400 - margin.top - margin.bottom;
             
             // append the svg object to the body of the page
@@ -190,7 +189,6 @@
 
             // creat X and Y scales. Scaleband for bars.
             const x = d3.scaleLinear()
-                        // .domain([0, d3.max(data.map(d => (d.prob * 100)))])
                         .domain([0, 100])
                         .rangeRound([0, width])
                         .nice();
@@ -202,21 +200,22 @@
 
             // add X and Y axis to the SVG object
             const xAxis = svg.append('g')
-                            // .attr('class', 'x axis')
+                            .attr('class', 'x axis')
                             .attr('transform', 'translate(0,' + height + ')')
-                            .attr('font-weight', 'bold')
                             .call(d3.axisBottom(x));
             
             const yAxis = svg.append('g')
-                            // .attr('class', 'y axis')
-                            .call(d3.axisLeft(y));
+                            .attr('class', 'y axis')
+                            .call(d3.axisLeft(y))
+                            .selectAll('text')
+                            .attr('transform', 'translate(-3,-8)rotate(-30)');
 
             // create bars
             const bars = svg.selectAll('.bar')
                             .data(data)
                             .enter().append('rect')
                             .attr('class', 'bar')
-                            .attr('x', function(d) { return x(0); })
+                            .attr('x', function(d) { return x(0.3); })
                             .attr('width', x(0))
                             .attr('y', d => y(d.breed))
                             .attr('height', y.bandwidth())
@@ -249,9 +248,34 @@
                             .text(d => (d.prob * 100).toFixed(2) + '%')
                             .style('text-anchor', 'middle')
                             .style('fill', '#000000')
-                            .style('font-weight', 'bold');
+                            .style('font-weight', 'bold')
+                            .style('font-family', 'Helvetica');
+        }
+
+        function wrap(text, width) {
+            text.each(function() {
+                var text = d3.select(this),
+                    words = text.text().split(/\s+/).reverse(),
+                    word,
+                    line = [],
+                    lineNumber = 0,
+                    lineHeight = 1.1, // ems
+                    y = text.attr("y"),
+                    dy = parseFloat(text.attr("dy")),
+                    tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em")
+            while (word = words.pop()) {
+                line.push(word)
+                tspan.text(line.join(" "))
+                if (tspan.node().getComputedTextLength() > width) {
+                    line.pop()
+                    tspan.text(line.join(" "))
+                    line = [word]
+                    tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", `${++lineNumber * lineHeight + dy}em`).text(word)
+                    }
+                }
+            })
         }
     </script>
 
-  </body>
+    </body>
 </html>

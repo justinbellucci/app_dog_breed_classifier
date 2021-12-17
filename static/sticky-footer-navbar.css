@@ -7,3 +7,23 @@ main > .container-sm {
   padding: 0px 5px 0px;
 }
 
+.axis line {
+  stroke: #000000;
+  fill: #000000;
+  stroke-width: 1px;
+}
+
+.axis path {
+  stroke: #000000;
+  stroke-width: 2px;
+}
+
+.axis text {
+  font-family: Helvetica;
+  /* fill: #000000; */
+  font-size: 12px;
+}
+
+/* .x.axis path {
+  display: none;
+} */
