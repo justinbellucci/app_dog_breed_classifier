@@ -1,9 +1,9 @@
 # Dog Breed Classifier Application 
-This command line application accepts a user supplied image. If the image is a dog, the app will predict the breed of the dog with a certain probability and output the topk (k=5) results. The application handles cases for a dog, person, and not a dog. Using a haarcascade alogrithm the app will detect if there is a person in the image, then return the dog breed that the person looks most likely resembles. This project was for Udacity's Deep Learning Nanodegree. Enjoy!
+Using a midified VGG16 neural network and OpenCV, this Flask application will predict the breed of the dog with a certain probability and output the topk (k=5) results. The application handles cases for a dog, person, and not a dog. Using a haarcascade alogrithm the app will detect if there is a person in the image, then return the dog breed that the person looks most likely resembles. Enjoy!
 
-There are two phases to this project:
-1. Phase 1 (complete) - command line application
-2. Phase 2 (in progress) - flask application user interface
+<p align="center">
+<img width="600" src = 'backend/assets/DogClassifierApp.gif'>
+</p>
 
 ### Navigation
 * [Installation](#installation)
