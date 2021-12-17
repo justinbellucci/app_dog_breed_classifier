@@ -1,5 +1,5 @@
 import io
-from flask import Flask, render_template, request, redirect, jsonify, url_for
+from flask import Flask, render_template, request, jsonify
 
 import backend.detectors as detectors
 from backend.predict import predict_breed
