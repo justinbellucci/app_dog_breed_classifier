@@ -1,7 +1,7 @@
 # Dog Breed Classifier Application 
-Using a modified DenseNet121 neural network and OpenCV, this app will predict the breed of a dog in an image and output the top five classes. A transfer learning approach to training was taken by replacing the fully connected layer of the neural network with one particular to the number of classes in this project. The model was trained with the convolutional layers frozen so as not to backpropagate the parameters through the network. It can handle cases for a dog, person, and not a dog. Using a haarcascade alogrithm the app will detect if there is a person in the image, then return the dog breed that the person looks most likely resembles. Enjoy!
+Using a modified DenseNet121 neural network and OpenCV, this command line application will predict the breed of a dog in an image and output the top five classes. A transfer learning approach to training was taken by replacing the fully connected layer of the neural network with one particular to the number of classes in this project. The model was trained with the convolutional layers frozen so as not to backpropagate the parameters through the network. It can handle cases for a dog, person, and not a dog. Using a haarcascade alogrithm the app will detect if there is a person in the image, then return the dog breed that the person looks most likely resembles. Enjoy!
 
-The implementation of this app can be found on my [personal website](bellucci.io).
+The implementation of this app, as seen below, can be found on my [personal website](https://www.bellucci.io).
 
 <p align="center">
 <img width="700" src = 'backend/assets/DogClassifierApp.gif'>
